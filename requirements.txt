@@ -4,3 +4,6 @@ protobuf
 PyPDF2
 python-dotenv
 streamlit==1.29.0
+google-generativeai
+faiss-cpu
+langchain-community
