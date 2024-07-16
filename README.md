@@ -13,8 +13,10 @@ git clone https://github.com/sandyram19/chat-with-pdf.git
 ```shell 
 pip install -r requirements.txt
 ```
+3. Create a .env file in the same repo and store ur GOOGLE_API_KEY in it. 
+GOOGLE_API_KEY="https://aistudio.google.com/app/apikey"
 
-3. Run the project using
+4. Run the project using
 ```shell
 streamlit run chat.py
 ```
