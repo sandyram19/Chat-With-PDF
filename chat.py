@@ -57,7 +57,7 @@ def user_input(user_question,chain):
     
     new_db = FAISS.load_local("faiss_index", embeddings,allow_dangerous_deserialization=True)
     docs = new_db.similarity_search(user_question)
-    print("\nDOCS\n",docs[:5])
+    print("\nDOCS\n",docs)
     history = chain.memory.buffer
     print("HIstory\n",history)
     response=chain({"input_documents": docs, "human_input": user_question}, return_only_outputs=True)
@@ -74,8 +74,7 @@ def main():
     if "conversation_chain" not in st.session_state:
         
         prompt_template = """
-        Answer the question as detailed as possible from the provided context, make sure to provide all the details, if the answer is not in
-        provided context just say, "I am unaware, Please contact the business directly.", don't provide the wrong answer\n\n
+        Answer the question as detailed as possible from the provided context, make sure to provide all the details. If questions are asked outside the context, reply "Contact business directly."
         
         Context:\n {context}\n
 
@@ -88,7 +87,7 @@ def main():
         prompt = PromptTemplate(input_variables = ["chat_history","human_input", "context"],template = prompt_template)
         memory=ConversationBufferMemory(memory_key="chat_history",input_key="human_input")
         llm = ChatGoogleGenerativeAI(google_api_key=GOOGLE_API_KEY, model="gemini-pro",
-                                temperature=0.1)
+                                temperature=0.3)
 
         
         chain =  load_qa_chain(llm=llm,  memory=memory, prompt=prompt, chain_type="stuff")
@@ -119,15 +118,6 @@ def main():
             st.markdown(res)
         # Add assistant response to chat history
         st.session_state.messages.append({"role": "assistant", "content": res})
-
-
-    
-        
-
-    
-                
-
-
 
 if __name__ == "__main__":
     main()
